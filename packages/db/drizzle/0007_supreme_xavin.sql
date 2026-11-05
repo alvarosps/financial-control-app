@@ -1,0 +1,1 @@
+ALTER TABLE "income_source_configs" ADD COLUMN "conversion_fee_percent" numeric(5, 2) DEFAULT '0' NOT NULL;

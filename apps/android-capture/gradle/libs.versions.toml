@@ -1,0 +1,22 @@
+[versions]
+agp = "9.1.1"
+ksp = "2.3.6"
+room = "2.8.5"
+work = "2.11.2"
+core = "1.17.0"
+junit = "4.13.2"
+androidTest = "1.7.0"
+runner = "1.7.0"
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+
+[libraries]
+core = { module = "androidx.core:core-ktx", version.ref = "core" }
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+work = { module = "androidx.work:work-runtime-ktx", version.ref = "work" }
+junit = { module = "junit:junit", version.ref = "junit" }
+test-core = { module = "androidx.test:core", version.ref = "androidTest" }
+test-runner = { module = "androidx.test:runner", version.ref = "runner" }

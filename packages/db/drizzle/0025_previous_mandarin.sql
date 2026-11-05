@@ -1,0 +1,9 @@
+ALTER TABLE "loan_configs" ADD COLUMN "annual_cet" numeric(10, 8);--> statement-breakpoint
+ALTER TABLE "loan_configs" ADD COLUMN "annual_cet_source" varchar(200);--> statement-breakpoint
+ALTER TABLE "loan_configs" ADD COLUMN "annual_cet_observed_on" date;--> statement-breakpoint
+ALTER TABLE "loan_configs" ADD COLUMN "payoff_quote_amount" numeric(12, 2);--> statement-breakpoint
+ALTER TABLE "loan_configs" ADD COLUMN "payoff_quote_on" date;--> statement-breakpoint
+ALTER TABLE "loan_configs" ADD COLUMN "payoff_quote_valid_until" date;--> statement-breakpoint
+ALTER TABLE "loan_configs" ADD COLUMN "payoff_quote_source" varchar(200);--> statement-breakpoint
+ALTER TABLE "loan_configs" ADD COLUMN "economic_responsibility" varchar(12) DEFAULT 'unknown' NOT NULL;--> statement-breakpoint
+ALTER TABLE "loan_configs" ADD CONSTRAINT "loan_cost_evidence" CHECK ((("loan_configs"."annual_cet" IS NULL AND "loan_configs"."annual_cet_source" IS NULL AND "loan_configs"."annual_cet_observed_on" IS NULL) OR ("loan_configs"."annual_cet" IS NOT NULL AND "loan_configs"."annual_cet" >= 0 AND "loan_configs"."annual_cet_source" IS NOT NULL AND length(btrim("loan_configs"."annual_cet_source")) > 0 AND "loan_configs"."annual_cet_observed_on" IS NOT NULL)) AND (("loan_configs"."payoff_quote_amount" IS NULL AND "loan_configs"."payoff_quote_on" IS NULL AND "loan_configs"."payoff_quote_valid_until" IS NULL AND "loan_configs"."payoff_quote_source" IS NULL) OR ("loan_configs"."payoff_quote_amount" IS NOT NULL AND "loan_configs"."payoff_quote_amount">0 AND "loan_configs"."payoff_quote_on" IS NOT NULL AND "loan_configs"."payoff_quote_valid_until" IS NOT NULL AND "loan_configs"."payoff_quote_valid_until" >= "loan_configs"."payoff_quote_on" AND "loan_configs"."payoff_quote_source" IS NOT NULL AND length(btrim("loan_configs"."payoff_quote_source"))>0)) AND "loan_configs"."economic_responsibility" IN ('unknown','own','family','work','property'));

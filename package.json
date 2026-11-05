@@ -1,0 +1,58 @@
+{
+  "name": "financial-control-v2",
+  "private": true,
+  "scripts": {
+    "dev": "node --env-file=.env node_modules/turbo/bin/turbo dev",
+    "build": "node --env-file-if-exists=.env node_modules/turbo/bin/turbo build",
+    "test": "turbo test",
+    "test:watch": "turbo test:watch",
+    "lint": "biome check . && pnpm i18n:check",
+    "lint:fix": "biome check --write .",
+    "i18n:check": "tsx scripts/i18n-check.ts",
+    "i18n:extract": "tsx scripts/i18n-extract.ts",
+    "format": "biome format --write .",
+    "type-check": "turbo type-check",
+    "db:generate": "turbo db:generate",
+    "db:migrate": "turbo db:migrate",
+    "db:safe-migrate": "tsx scripts/db-maintenance.ts migrate",
+    "db:backup": "tsx scripts/db-maintenance.ts backup",
+    "financial:audit": "tsx packages/api/src/scripts/audit-financial-integrity.ts",
+    "financial:repair": "tsx packages/api/src/scripts/apply-financial-repair.ts",
+    "check:db:canonical": "bash scripts/check-canonical-sql.sh",
+    "db:studio": "pnpm --filter @fc/db db:studio",
+    "test:db:reset": "bash scripts/test-db-reset.sh",
+    "demo:seed": "tsx packages/api/src/scripts/demo-seed.ts",
+    "demo:reset": "tsx packages/api/src/scripts/demo-seed.ts --reset",
+    "financial:historical": "tsx packages/api/src/scripts/historical-settlements.ts",
+    "db:setup:local": "tsx scripts/setup-local-db.ts"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.10",
+    "ts-morph": "^28.0.0",
+    "tsx": "^4.21.0",
+    "turbo": "^2.9.14",
+    "typescript": "^5.7"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,json}": "biome check --write --no-errors-on-unmatched"
+  },
+  "packageManager": "pnpm@10.33.0",
+  "pnpm": {
+    "overrides": {
+      "@babel/core": "^7.29.6",
+      "esbuild": "^0.28.1",
+      "postcss": "^8.5.18",
+      "sharp": "^0.35.5",
+      "brace-expansion@>=5.0.0 <5.0.6": "5.0.6",
+      "shell-quote": "^1.11.0",
+      "nanoid@3": "^3.3.18",
+      "source-map-js": "^1.2.2",
+      "browserslist": "^4.28.7",
+      "tinypool": "^2.1.2",
+      "undici@7": "^7.30.1"
+    }
+  },
+  "engines": {
+    "node": ">=24.11.0 <25"
+  }
+}

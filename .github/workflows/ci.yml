@@ -1,0 +1,135 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - uses: ./.github/actions/setup-pnpm
+
+      - name: Lint
+        run: pnpm lint
+
+  type-check:
+    name: Type check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - uses: ./.github/actions/setup-pnpm
+
+      - name: Type check
+        run: pnpm type-check
+
+  test:
+    name: Test (${{ matrix.name }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: domain
+            command: pnpm --filter @fc/domain test
+          - name: shared
+            command: pnpm --filter @fc/shared test
+          - name: db
+            command: pnpm --filter @fc/db test
+          - name: web
+            command: pnpm --filter @fc/web test
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - uses: ./.github/actions/setup-pnpm
+
+      - name: Test ${{ matrix.name }}
+        run: ${{ matrix.command }}
+
+  test-api:
+    name: Test (api)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: financial_control_v2_test
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d financial_control_v2_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/financial_control_v2_test
+      TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/financial_control_v2_test
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - uses: ./.github/actions/setup-pnpm
+
+      - name: Reset test database
+        run: pnpm test:db:reset --confirm
+
+      - name: Test api
+        run: pnpm --filter @fc/api test
+
+  database-convergence:
+    name: Database convergence
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: financial_control_v2_test
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d financial_control_v2_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/financial_control_v2_test
+      TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/financial_control_v2_test
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - uses: ./.github/actions/setup-pnpm
+
+      - name: Compare migration replay with canonical SQL
+        run: pnpm check:db:canonical
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    env:
+      APP_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test
+      NEXT_PUBLIC_APP_URL: http://localhost:3001
+      TRUSTED_ORIGINS: http://localhost:3001
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - uses: ./.github/actions/setup-pnpm
+
+      - name: Generate build-only authentication secret
+        shell: bash
+        run: echo "BETTER_AUTH_SECRET=$(openssl rand -hex 32)" >> "$GITHUB_ENV"
+
+      - name: Build
+        run: pnpm build

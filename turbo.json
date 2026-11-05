@@ -1,0 +1,51 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalEnv": ["NODE_ENV"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "dist/**"],
+      "env": [
+        "DATABASE_URL",
+        "APP_DATABASE_URL",
+        "CAPTURE_ANDROID_ENABLED",
+        "BETTER_AUTH_SECRET",
+        "TRUSTED_ORIGINS",
+        "NEXT_PUBLIC_APP_URL",
+        "PORT"
+      ]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "env": [
+        "DATABASE_URL",
+        "APP_DATABASE_URL",
+        "CAPTURE_ANDROID_ENABLED",
+        "TEST_DATABASE_URL",
+        "BETTER_AUTH_SECRET",
+        "TRUSTED_ORIGINS",
+        "NEXT_PUBLIC_APP_URL",
+        "PORT"
+      ]
+    },
+    "test": {
+      "env": ["DATABASE_URL", "TEST_DATABASE_URL"]
+    },
+    "test:watch": {
+      "cache": false,
+      "persistent": true,
+      "env": ["DATABASE_URL", "TEST_DATABASE_URL"]
+    },
+    "lint": {},
+    "type-check": {},
+    "db:generate": {
+      "cache": false,
+      "env": ["DATABASE_URL"]
+    },
+    "db:migrate": {
+      "cache": false,
+      "env": ["DATABASE_URL"]
+    }
+  }
+}

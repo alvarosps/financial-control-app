@@ -1,0 +1,26 @@
+{
+  "early": [
+    "0004_triggers_and_rls.sql",
+    "0005_audit_hardening.sql",
+    "0007_stream_c_invariants.sql"
+  ],
+  "late": [
+    "0008_materializer_unique.sql",
+    "0009_domain_type_refund_check.sql",
+    "0010_fx_rates.sql",
+    "0011_family_loan_payment_and_receipt_day.sql",
+    "0012_transactions_billing_month_check.sql",
+    "0013_rls_complete_policies.sql",
+    "0014_app_user_role.sql",
+    "0015_balance_trigger_lock.sql",
+    "0016_transactions_billing_pair_check.sql",
+    "0017_fk_indexes.sql",
+    "0018_user_profiles_updated_at.sql",
+    "0019_auth_timestamptz.sql",
+    "0020_fx_rates_history.sql",
+    "0021_fatura_imports.sql",
+    "0022_auth_tables_disable_rls.sql",
+    "0023_user_profiles_rls_empty_guc.sql",
+    "0024_fatura_match_rules.sql"
+  ]
+}

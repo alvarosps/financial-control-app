@@ -1,0 +1,34 @@
+{
+  "name": "@fc/api",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@fc/db": "workspace:*",
+    "@fc/domain": "workspace:*",
+    "@fc/shared": "workspace:*",
+    "@trpc/server": "^11.0",
+    "better-auth": "^1.7.18",
+    "date-fns": "^4.1.0",
+    "decimal.js": "^10.5",
+    "dotenv": "^17.3.1",
+    "drizzle-orm": "^0.45.2",
+    "pdf-lib": "1.17.1",
+    "pino": "^10.3.1",
+    "superjson": "^2.2",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.3",
+    "typescript": "^5.7",
+    "vitest": "^3.2.6"
+  }
+}

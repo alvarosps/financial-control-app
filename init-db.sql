@@ -1,0 +1,2 @@
+CREATE DATABASE financial_control_v2;
+CREATE DATABASE financial_control_v2_test;
