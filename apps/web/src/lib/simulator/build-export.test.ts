@@ -224,7 +224,7 @@ describe('buildExport', () => {
           id: 'lev-x',
           amount: '100.00',
           fromMonth: { month: 6, year: 2026 },
-          label: 'Netflix | HBO\nfoo',
+          label: 'Netflix \\| HBO\nfoo',
         },
       ],
     };
@@ -232,7 +232,7 @@ describe('buildExport', () => {
     const leverLine = markdown.split('\n').find((line) => line.startsWith('- Average spend'));
     expect(leverLine).toBeDefined();
     // Pipe is escaped so it can't break a markdown table cell.
-    expect(leverLine).toContain('Netflix \\| HBO foo');
+    expect(leverLine).toContain(String.raw`Netflix \\\| HBO foo`);
     // The label's raw newline is flattened, so the lever stays on a single line.
     expect(leverLine).not.toMatch(/\n/);
     expect(markdown).not.toContain('Netflix | HBO');

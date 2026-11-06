@@ -12,10 +12,10 @@ function mm(month: number, year: number): string {
 }
 
 // Sanitize free-text (user-provided labels, ids) before interpolating into
-// markdown: escape the pipe so it can't break table cells, and flatten any CR/LF
+// markdown: escape backslashes and pipes so they can't break table cells, and flatten CR/LF
 // so a label can't inject extra lines into the bullet list or the AI prompt.
 function escapeInline(s: string): string {
-  return s.replace(/[\r\n]+/g, ' ').replace(/\|/g, '\\|');
+  return s.replace(/[\r\n]+/g, ' ').replace(/[\\|]/g, '\\$&');
 }
 
 function leverLine(lever: SimLever): string {

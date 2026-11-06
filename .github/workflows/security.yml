@@ -31,4 +31,4 @@ jobs:
         with:
           persist-credentials: false
       - uses: ./.github/actions/setup-pnpm
-      - run: pnpm audit --prod --audit-level high
+      - run: pnpm audit
