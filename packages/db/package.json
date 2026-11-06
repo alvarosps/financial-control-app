@@ -23,10 +23,11 @@
     "postgres": "^3.4"
   },
   "devDependencies": {
+    "@types/node": "^24.13.3",
     "dotenv": "^17.0",
     "drizzle-kit": "^0.31.10",
     "tsx": "^4.21.0",
     "typescript": "^5.7",
-    "vitest": "^3.2.6"
+    "vitest": "^4.1.12"
   }
 }

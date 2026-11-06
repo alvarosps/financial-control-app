@@ -44,6 +44,7 @@ import {
   type StringLiteral,
   SyntaxKind,
 } from 'ts-morph';
+import { markdownCodeSpan } from './lib/markdown.ts';
 
 type Finding = {
   file: string;
@@ -480,7 +481,7 @@ async function main() {
     ...(skipped.length === 0
       ? ['_none_']
       : skipped.map(
-          (f) => `- \`${relWeb(f.file)}\` — ${f.kind}: \`${f.text.replace(/`/g, '\\`')}\``,
+          (f) => `- ${markdownCodeSpan(relWeb(f.file))} — ${f.kind}: ${markdownCodeSpan(f.text)}`,
         )),
     '',
   ].join('\n');
