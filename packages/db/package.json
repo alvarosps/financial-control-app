@@ -20,7 +20,7 @@
   "dependencies": {
     "@fc/shared": "workspace:*",
     "drizzle-orm": "^0.45.2",
-    "postgres": "^3.4"
+    "postgres": "^4.1"
   },
   "devDependencies": {
     "@types/node": "^24.13.3",
